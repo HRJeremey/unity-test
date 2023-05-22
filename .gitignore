@@ -10,6 +10,14 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 
+/POC_project/[Ll]ibrary/
+/POC_project/[Tt]emp/
+/POC_project/[Oo]bj/
+/POC_project/[Bb]uild/
+/POC_project/[Bb]uilds/
+/POC_project/[Ll]ogs/
+/POC_project/[Uu]ser[Ss]ettings/
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
