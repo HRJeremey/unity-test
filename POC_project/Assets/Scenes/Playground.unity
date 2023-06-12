@@ -1615,6 +1615,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obj_transform: {fileID: 2125372986}
+  ip: 192.168.18.4
+  port: 32773
 --- !u!4 &2125372986 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9005220659476430818, guid: 2d3a85ecde41a8246a79669975912b74,
