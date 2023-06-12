@@ -21,6 +21,7 @@ public class Grid
         this.cellSize = cellSize;
         this.origin = origin;
 
+
         // initialize grid
         gridArray = new int[width, height];
         debugTextArray = new TextMesh[width, height];
