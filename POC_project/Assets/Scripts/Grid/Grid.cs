@@ -33,8 +33,6 @@ public class Grid
         }
         Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.white, 100f);
         Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.white, 100f);
-
-        SetValue(2, 1, 56);
     }
 
     private Vector3 GetWorldPosition(int x, int z)
@@ -58,6 +56,13 @@ public class Grid
         int x, z;
         GetXZ(worldPosition, out x, out z);
         SetValue(x, z, value);
+    }
+
+    public void AddValue(int x, int z, int value){
+        if(x >= 0 && z >= 0 && x < width && z < height){
+        gridArray[x, z] += value;
+        debugTextArray[x, z].text = gridArray[x, z].ToString();
+        }
     }
 
     public bool IsWithinGrid(int x, int z){
