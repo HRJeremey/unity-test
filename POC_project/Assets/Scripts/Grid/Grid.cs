@@ -11,12 +11,15 @@ public class Grid
     private float cellSize;
     private int[,] gridArray;
     private TextMesh[,] debugTextArray;
+    private Vector3 origin;
+
     // constructor
-    public Grid(int width, int height, float cellSize)
+    public Grid(int width, int height, float cellSize, Vector3 origin)
     {
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
+        this.origin = origin;
 
         // initialize grid
         gridArray = new int[width, height];
@@ -37,12 +40,12 @@ public class Grid
 
     private Vector3 GetWorldPosition(int x, int z)
     {
-        return new Vector3(x, 0, z) * cellSize;
+        return new Vector3(x, 0, z) * cellSize + origin;
     }
 
     public void GetXZ(Vector3 worldPosition, out int x, out int z){
-        x = Mathf.FloorToInt(worldPosition.x / cellSize);
-        z = Mathf.FloorToInt(worldPosition.z / cellSize);
+        x = Mathf.FloorToInt((worldPosition - origin).x / cellSize);
+        z = Mathf.FloorToInt((worldPosition - origin).z / cellSize);
     }
 
     public void SetValue(int x, int z, int value){

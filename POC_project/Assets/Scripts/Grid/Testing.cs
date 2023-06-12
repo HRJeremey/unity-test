@@ -16,9 +16,14 @@ public class Testing : MonoBehaviour
     public GameObject player;
     private Stack<GridCell> logStack = new Stack<GridCell>();
 
+    public int width;
+    public int height;
+    public int cellSize;
+    public Vector3 origin;
+
     private void Start()
     {
-        grid = new Grid(15, 15, 2f);
+        grid = new Grid(width,height,cellSize, origin);
     }
 
     private void Update()
