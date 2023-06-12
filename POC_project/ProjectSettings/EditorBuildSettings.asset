@@ -9,5 +9,15 @@ EditorBuildSettings:
     path: Assets/Scenes/Playground.unity
     guid: 707acc8dffb72b144bb1ffbe1c965f3d
   m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 0ccc08a8bdc6ede47be1fcdccef95205,
+      type: 2}
+    Unity.XR.OpenVR.Settings: {fileID: 11400000, guid: 757cedf270d5ea24795676633fb4dd98,
+      type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 9e7be553448fa2546aea5752021cbcf7,
+      type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: e76fddf111631534bb6b5d3c12bf7568,
+      type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 79ff82408156c974eae3722450735f54,
+      type: 2}
+    xr.sdk.mock-hmd.settings: {fileID: 11400000, guid: 7aa9ec2a06e3d5548894e3d440d16883,
       type: 2}
