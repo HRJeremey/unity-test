@@ -18,7 +18,7 @@ public class Testing : MonoBehaviour
 
     private void Start()
     {
-        grid = new Grid(5, 5, 2f);
+        grid = new Grid(15, 15, 2f);
     }
 
     private void Update()
@@ -27,13 +27,14 @@ public class Testing : MonoBehaviour
 
         grid.GetXZ(playerWorldPosition, out int x, out int z);
 
-        if(logStack.Count == 0)
-        {
-            logStack.Push(new GridCell(x,z));
-            PrintStack();
-        }
         if(grid.IsWithinGrid(x, z))
         {
+            if(logStack.Count == 0)
+            {
+                logStack.Push(new GridCell(x,z));
+                grid.AddValue(x,z,10);
+                PrintStack();
+            }
             if(x != currentX || z != currentZ){
                 Debug.Log("Player has moved to a new grid cell");
                 currentX = x;
