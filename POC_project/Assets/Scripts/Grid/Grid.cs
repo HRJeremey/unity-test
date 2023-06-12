@@ -1,20 +1,21 @@
+using System.Runtime.CompilerServices;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
 
-public class Grid
+public class GenericGrid<TGridObject>
 {
     // grid variables
     private int width;
     private int height;
     private float cellSize;
-    private int[,] gridArray;
+    private TGridObject[,] gridArray;
     private TextMesh[,] debugTextArray;
     private Vector3 origin;
 
     // constructor
-    public Grid(int width, int height, float cellSize, Vector3 origin)
+    public GenericGrid(int width, int height, float cellSize, Vector3 origin)
     {
         this.width = width;
         this.height = height;
@@ -23,7 +24,7 @@ public class Grid
 
 
         // initialize grid
-        gridArray = new int[width, height];
+        gridArray = new TGridObject[width, height];
         debugTextArray = new TextMesh[width, height];
 
         for (int x = 0; x < gridArray.GetLength(0); x++)
@@ -49,24 +50,32 @@ public class Grid
         z = Mathf.FloorToInt((worldPosition - origin).z / cellSize);
     }
 
-    public void SetValue(int x, int z, int value){
+    public void SetValue(int x, int z, TGridObject value){
         if(x >= 0 && z >= 0 && x < width && z < height){
         gridArray[x, z] = value;
         debugTextArray[x, z].text = gridArray[x, z].ToString();
         }
     }
 
-    public void SetValue(Vector3 worldPosition, int value){
+    public void SetValue(Vector3 worldPosition, TGridObject value){
         int x, z;
         GetXZ(worldPosition, out x, out z);
         SetValue(x, z, value);
     }
 
-    public void AddValue(int x, int z, int value){
-        if(x >= 0 && z >= 0 && x < width && z < height){
-        gridArray[x, z] += value;
-        debugTextArray[x, z].text = gridArray[x, z].ToString();
+    public TGridObject GetValue(int x, int z){
+        if(IsWithinGrid(x, z)){
+        return gridArray[x, z];
         }
+        else{
+            return default(TGridObject);
+        }
+    }
+
+    public TGridObject GetValue(Vector3 worldPosition){
+        int x, z;
+        GetXZ(worldPosition, out x, out z);
+        return GetValue(x, z);
     }
 
     public bool IsWithinGrid(int x, int z){

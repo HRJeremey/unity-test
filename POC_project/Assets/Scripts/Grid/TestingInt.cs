@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
 
-public class Testing : MonoBehaviour
+public class TestingInt : MonoBehaviour
 {
-    private Grid grid;
+    private GenericGrid<int> grid;
     private int currentX;
     private int currentZ;
     private float timer;
@@ -23,7 +23,7 @@ public class Testing : MonoBehaviour
 
     private void Start()
     {
-        grid = new Grid(width,height,cellSize, origin);
+        grid = new GenericGrid<int>(width,height,cellSize, origin);
     }
 
     private void Update()
@@ -37,7 +37,7 @@ public class Testing : MonoBehaviour
             if(logStack.Count == 0)
             {
                 logStack.Push(new GridCell(x,z));
-                grid.AddValue(x,z,10);
+                grid.SetValue(x,z,10);
                 PrintStack();
             }
             if(x != currentX || z != currentZ){
@@ -46,7 +46,7 @@ public class Testing : MonoBehaviour
                 currentZ = z;
                 timer = 0;
                 logStack.Push(new GridCell(x,z));
-                grid.AddValue(x,z,10);
+                grid.SetValue(x,z,10);
                 PrintStack();
             }
             else
@@ -58,7 +58,7 @@ public class Testing : MonoBehaviour
                 {
                     // Player has been in the same grid cell for more than 5 seconds
                     Debug.Log("Player has been in the same grid cell for more than 5 seconds");
-                    grid.AddValue(x, z, 10);
+                    grid.SetValue(x, z, 10);
                     logStack.Push(new GridCell(x,z));
                     timer = 0f;
                 }
