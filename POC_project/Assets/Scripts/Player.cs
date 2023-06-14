@@ -22,6 +22,9 @@ public class Player : MonoBehaviour
     public Hand leftHand;
     public Hand rightHand;
 
+    public SphereCollider leftHandCollider;
+    public SphereCollider rightHandCollider;
+
     public float jumpHeight;
     public float MovementSpeed;
     public float Deadzone;//the Deadzone of the trackpad. used to prevent unwanted walking.
@@ -32,12 +35,12 @@ public class Player : MonoBehaviour
     public bool TouchingGround;
     public GameObject Sphere;
 
+    private Transform Item;
+
     private void Start()
     {
         SphereOnOff.AddOnStateDownListener(TriggerDown, MovementHand);
         SphereOnOff.AddOnStateUpListener(TriggerUp, MovementHand);
-
-        TrackpadAction.AddOnChangeListener(AxisTest, MovementHand);
 
         CapCollider = GetComponent<CapsuleCollider>();
         RBody = GetComponent<Rigidbody>();
@@ -46,18 +49,23 @@ public class Player : MonoBehaviour
     public void TriggerUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
         Sphere.GetComponent<MeshRenderer>().enabled = false;
+
+        //if (this.Item != null)
+        //{
+        //    this.Item.GetComponent<Rigidbody>().useGravity = true;
+        //}
     }
 
     public void TriggerDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
-        Sphere.GetComponent<MeshRenderer>().enabled = true;
-    }
+        //Sphere.GetComponent<MeshRenderer>().enabled = true;
 
-    public void AxisTest(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
-    {
-        Debug.Log(axis);
+        //if (this.Item != null)
+        //{
+        //    this.Item.GetComponent<Rigidbody>().useGravity = false;
+        //    this.Item.transform.position = this.rightHand.GetComponent<Transform>().transform.position;
+        //}
     }
-
 
     void Update()
     {
@@ -80,13 +88,9 @@ public class Player : MonoBehaviour
                     //RBody.AddForce(moveDirection.x * MovementSpeed - RBody.velocity.x, 0, moveDirection.z * MovementSpeed - RBody.velocity.z, ForceMode.VelocityChange);
                 }
                 RBody.AddForce(moveDirection.x * MovementSpeed-RBody.velocity.x, 0, moveDirection.z * MovementSpeed-RBody.velocity.z, ForceMode.VelocityChange);
-
-                Debug.Log("Velocity" + moveDirection);
-                Debug.Log("Movement Direction:" + moveDirection);
             }
             else
             {
-                Debug.Log((moveDirection.x * MovementSpeed / (Mathf.Sqrt(2 * jumpHeight * 9.81f) / (9.81f))*Time.fixedDeltaTime, 0, moveDirection.z * MovementSpeed / (Mathf.Sqrt(2 * jumpHeight * 9.81f) / (9.81f)) * Time.fixedDeltaTime));
                 RBody.AddForce(moveDirection.x*MovementSpeed/( Mathf.Sqrt(2 * jumpHeight * 9.81f)/(9.81f)) * Time.fixedDeltaTime, 0, moveDirection.z *MovementSpeed/ (Mathf.Sqrt(2 * jumpHeight * 9.81f) / (9.81f)) * Time.fixedDeltaTime, ForceMode.VelocityChange);
             }
         }
@@ -95,6 +99,7 @@ public class Player : MonoBehaviour
             CapCollider.material = FrictionMaterial;
         }
     }
+
     public void CheckGround()
     {
         int layerMask = 1 << 9;
@@ -109,6 +114,7 @@ public class Player : MonoBehaviour
             TouchingGround = false;
         }
     }
+
     public static float Angle(Vector2 p_vector2)
     {
         
@@ -121,14 +127,15 @@ public class Player : MonoBehaviour
             return Mathf.Atan2(p_vector2.x, p_vector2.y) * Mathf.Rad2Deg;
         }
     }
+
     private void updateCollider()
     {
         CapCollider.height = Head.transform.localPosition.y;
         CapCollider.center = new Vector3(Head.transform.localPosition.x, Head.transform.localPosition.y / 2, Head.transform.localPosition.z);
     }
+
     private void updateInput()
     {
         if (TrackpadAction.GetActive(MovementHand)) trackpad = TrackpadAction.GetAxis(MovementHand);
     }
-    
 }

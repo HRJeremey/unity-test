@@ -15,6 +15,7 @@ public class DistanceText : MonoBehaviour
     void Start()
     {
         textComponent = GetComponent<TextMeshProUGUI>();
+        other = GameObject.Find("Camera");
     }
 
     void Update()
