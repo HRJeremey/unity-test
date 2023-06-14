@@ -20,8 +20,11 @@ public class VR_Movement : MonoBehaviour
 
     void Update()
     {
-        Movement.x = -MoveValue.axis.x * Speed * Time.deltaTime;
-        Movement.z = -MoveValue.axis.y * Speed * Time.deltaTime;
+        Movement.x = MoveValue.axis.x * Speed * Time.deltaTime;
+        Movement.z = MoveValue.axis.y * Speed * Time.deltaTime;
+
+        Movement = MyPlayer.hmdTransform.TransformDirection(Movement);
+        Movement.y = RBody.velocity.y;
     }
 
     void FixedUpdate()

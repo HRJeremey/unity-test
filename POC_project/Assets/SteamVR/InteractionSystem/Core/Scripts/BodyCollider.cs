@@ -29,15 +29,11 @@ namespace Valve.VR.InteractionSystem
 		void FixedUpdate()
 		{
 			float distanceFromFloor = Vector3.Dot( head.localPosition, Vector3.up );
-			capsuleCollider.height = Mathf.Max( capsuleCollider.radius, distanceFromFloor );
+			//capsuleCollider.height = Mathf.Max( capsuleCollider.radius, distanceFromFloor );
 			Vector3 headPos = head.transform.position;
 			headPos.y = transform.position.y;
 			transform.position = headPos;
 			//transform.localPosition = head.localPosition - 0.5f * distanceFromFloor * Vector3.up;
-
-			var newRotation = player.rotation;
-			newRotation.y = head.rotation.y;
-			player.rotation = newRotation;
 		}
 	}
 }
