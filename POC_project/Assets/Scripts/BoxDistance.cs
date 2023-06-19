@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -17,26 +16,25 @@ public class BoxDistance : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player entered the box");
+            Debug.Log("Player entered the danger zone");
         }
     }
 
     void OnTriggerStay(Collider other)
     {
-        if(other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
             float distance = Vector3.Distance(other.transform.position, transform.position);
-            Debug.Log($"distance: {distance}");
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if(other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player exited the box");
+            Debug.Log("Player exited the danger zone");
         }
     }
 }

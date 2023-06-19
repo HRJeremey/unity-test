@@ -1,4 +1,16 @@
-﻿using System;
+﻿/* 
+    ------------------- Code Monkey -------------------
+
+    Thank you for downloading the Code Monkey Utilities
+    I hope you find them useful in your projects
+    If you have any questions use the contact form
+    Cheers!
+
+               unitycodemonkey.com
+    --------------------------------------------------
+ */
+
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,13 +22,13 @@ namespace CodeMonkey.Utils {
      * Various assorted utilities functions
      * */
     public static class UtilsClass {
-
+        
         private static readonly Vector3 Vector3zero = Vector3.zero;
         private static readonly Vector3 Vector3one = Vector3.one;
         private static readonly Vector3 Vector3yDown = new Vector3(0,-1);
 
         public const int sortingOrderDefault = 5000;
-
+        
         // Get Sorting order to set SpriteRenderer sortingOrder, higher position = lower sortingOrder
         public static int GetSortingOrder(Vector3 position, int offset, int baseSortingOrder = sortingOrderDefault) {
             return (int)(baseSortingOrder - position.y) + offset;
@@ -45,7 +57,7 @@ namespace CodeMonkey.Utils {
         public static GameObject CreateWorldSprite(string name, Sprite sprite, Vector3 position, Vector3 localScale, int sortingOrder, Color color) {
             return CreateWorldSprite(null, name, sprite, position, localScale, sortingOrder, color);
         }
-
+        
         // Create a Sprite in the World
         public static GameObject CreateWorldSprite(Transform parent, string name, Sprite sprite, Vector3 localPosition, Vector3 localScale, int sortingOrder, Color color) {
             GameObject gameObject = new GameObject(name, typeof(SpriteRenderer));
@@ -87,14 +99,13 @@ namespace CodeMonkey.Utils {
             if (color == null) color = Color.white;
             return CreateWorldText(parent, text, localPosition, fontSize, (Color)color, textAnchor, textAlignment, sortingOrder);
         }
-
+        
         // Create Text in the World
         public static TextMesh CreateWorldText(Transform parent, string text, Vector3 localPosition, int fontSize, Color color, TextAnchor textAnchor, TextAlignment textAlignment, int sortingOrder) {
             GameObject gameObject = new GameObject("World_Text", typeof(TextMesh));
             Transform transform = gameObject.transform;
             transform.SetParent(parent, false);
             transform.localPosition = localPosition;
-            transform.rotation = Quaternion.Euler(90, 90, 90);
             TextMesh textMesh = gameObject.GetComponent<TextMesh>();
             textMesh.anchor = textAnchor;
             textMesh.alignment = textAlignment;
@@ -110,7 +121,7 @@ namespace CodeMonkey.Utils {
         public static void CreateWorldTextPopup(string text, Vector3 localPosition, float popupTime = 1f) {
             CreateWorldTextPopup(null, text, localPosition, 40, Color.white, localPosition + new Vector3(0, 20), popupTime);
         }
-
+        
         // Create a Text Popup in the World
         public static void CreateWorldTextPopup(Transform parent, string text, Vector3 localPosition, int fontSize, Color color, Vector3 finalPopupPosition, float popupTime) {
             TextMesh textMesh = CreateWorldText(parent, text, localPosition, fontSize, color, TextAnchor.LowerLeft, TextAlignment.Left, sortingOrderDefault);
@@ -143,13 +154,13 @@ namespace CodeMonkey.Utils {
             RectTransform rectTransform = DrawSprite(null, color, parent, pos, size, name);
             return rectTransform;
         }
-
+        
         // Draw a UI Sprite
         public static RectTransform DrawSprite(Sprite sprite, Transform parent, Vector2 pos, Vector2 size, string name = null) {
             RectTransform rectTransform = DrawSprite(sprite, Color.white, parent, pos, size, name);
             return rectTransform;
         }
-
+        
         // Draw a UI Sprite
         public static RectTransform DrawSprite(Sprite sprite, Color color, Transform parent, Vector2 pos, Vector2 size, string name = null) {
             // Setup icon
@@ -204,7 +215,7 @@ namespace CodeMonkey.Utils {
 		    }
 		    return f;
 	    }
-
+        
         // Parse a int, return default if failed
 	    public static int Parse_Int(string txt, int _default) {
 		    int i;
@@ -245,7 +256,7 @@ namespace CodeMonkey.Utils {
             return (mouseWorldPosition - fromPosition).normalized;
         }
 
-
+        
 
         // Is Mouse over a UI Element? Used for ignoring World clicks through UI
         public static bool IsPointerOverUI() {
@@ -261,7 +272,7 @@ namespace CodeMonkey.Utils {
         }
 
 
-
+        
 		// Returns 00-FF, value 0->255
 	    public static string Dec_to_Hex(int value) {
 		    return value.ToString("X2");
@@ -271,7 +282,7 @@ namespace CodeMonkey.Utils {
 	    public static int Hex_to_Dec(string hex) {
 		    return Convert.ToInt32(hex, 16);
 	    }
-
+        
 		// Returns a hex string based on a number between 0->1
 	    public static string Dec01_to_Hex(float value) {
 		    return Dec_to_Hex((int)Mathf.Round(value*255f));
@@ -289,7 +300,7 @@ namespace CodeMonkey.Utils {
 		    string blue = Dec01_to_Hex(color.b);
 		    return red+green+blue;
 	    }
-
+        
         // Get Hex Color FF00FFAA
 	    public static string GetStringFromColorWithAlpha(Color color) {
 		    string alpha = Dec01_to_Hex(color.a);
@@ -303,7 +314,7 @@ namespace CodeMonkey.Utils {
 		    blue = Dec01_to_Hex(color.b);
 		    alpha = Dec01_to_Hex(color.a);
 	    }
-
+        
         // Get Hex Color FF00FF
 	    public static string GetStringFromColor(float r, float g, float b) {
 		    string red = Dec01_to_Hex(r);
@@ -311,13 +322,13 @@ namespace CodeMonkey.Utils {
 		    string blue = Dec01_to_Hex(b);
 		    return red+green+blue;
 	    }
-
+        
         // Get Hex Color FF00FFAA
 	    public static string GetStringFromColor(float r, float g, float b, float a) {
 		    string alpha = Dec01_to_Hex(a);
 		    return GetStringFromColor(r,g,b)+alpha;
 	    }
-
+        
         // Get Color from Hex string FF00FFAA
 	    public static Color GetColorFromString(string color) {
 		    float red = Hex_to_Dec01(color.Substring(0,2));
@@ -393,13 +404,13 @@ namespace CodeMonkey.Utils {
             float angleRad = angle * (Mathf.PI/180f);
             return new Vector3(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
         }
-
+        
         public static Vector3 GetVectorFromAngle(float angle) {
             // angle = 0 -> 360
             float angleRad = angle * (Mathf.PI/180f);
             return new Vector3(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
         }
-
+        
         public static Vector3 GetVectorFromAngleInt(int angle) {
             // angle = 0 -> 360
             float angleRad = angle * (Mathf.PI/180f);
@@ -469,7 +480,7 @@ namespace CodeMonkey.Utils {
                 if (dragging) {
                     onMouseDragging(UtilsClass.GetMouseWorldPosition());
                 }
-                return false;
+                return false; 
             });
         }
 
@@ -497,7 +508,7 @@ namespace CodeMonkey.Utils {
                         onMouseClickFromTo(from, UtilsClass.GetMouseWorldPosition());
                     }
                 }
-                return false;
+                return false; 
             });
         }
 
@@ -510,7 +521,7 @@ namespace CodeMonkey.Utils {
                 if (Input.GetMouseButtonDown(mouseButton)) {
                     onMouseClick(GetWorldPositionFromUI());
                 }
-                return false;
+                return false; 
             });
         }
 
@@ -519,11 +530,11 @@ namespace CodeMonkey.Utils {
                 if (Input.GetKeyDown(keyCode)) {
                     onKeyDown();
                 }
-                return false;
+                return false; 
             });
         }
 
-
+        
 
         // Get UI Position from World Position
         public static Vector2 GetWorldUIPosition(Vector3 worldPosition, Transform parent, Camera uiCamera, Camera worldCamera) {
@@ -552,7 +563,7 @@ namespace CodeMonkey.Utils {
             Vector3 worldPosition = worldCamera.ScreenToWorldPoint(screenPosition);
             return worldPosition;
         }
-
+    
         public static Vector3 GetWorldPositionFromUI_Perspective() {
             return GetWorldPositionFromUI_Perspective(Input.mousePosition, Camera.main);
         }

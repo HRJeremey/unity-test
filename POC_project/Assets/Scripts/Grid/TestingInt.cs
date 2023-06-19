@@ -1,13 +1,13 @@
-using System;
-using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using UnityEngine;
-using CodeMonkey.Utils;
+using UnityEngine.Networking;
 
 public class TestingInt : MonoBehaviour
 {
-    private GenericGrid<int> grid;
+    private GenericGrid grid;
     private int currentX;
     private int currentZ;
     private float timer;
@@ -15,15 +15,18 @@ public class TestingInt : MonoBehaviour
 
     public GameObject player;
     private Stack<GridCell> logStack = new Stack<GridCell>();
+    private Stack<int> distanceStack = new Stack<int>();
 
     public int width;
     public int height;
     public int cellSize;
     public Vector3 origin;
+    public Sprite imageSprite;
+    public GameObject target;
 
     private void Start()
     {
-        grid = new GenericGrid<int>(width,height,cellSize, origin);
+        grid = new GenericGrid(width, height, cellSize, origin, imageSprite);
     }
 
     private void Update()
@@ -32,22 +35,22 @@ public class TestingInt : MonoBehaviour
 
         grid.GetXZ(playerWorldPosition, out int x, out int z);
 
-        if(grid.IsWithinGrid(x, z))
+        if (grid.IsWithinGrid(x, z))
         {
-            if(logStack.Count == 0)
+            if (logStack.Count == 0)
             {
-                logStack.Push(new GridCell(x,z));
-                grid.SetValue(x,z,10);
-                PrintStack();
+                UpdateGrid(playerWorldPosition, x, z);
+                StartCoroutine(FetchLocation(player));
+
             }
-            if(x != currentX || z != currentZ){
+            if (x != currentX || z != currentZ)
+            {
                 Debug.Log("Player has moved to a new grid cell");
                 currentX = x;
                 currentZ = z;
                 timer = 0;
-                logStack.Push(new GridCell(x,z));
-                grid.SetValue(x,z,10);
-                PrintStack();
+                UpdateGrid(playerWorldPosition, x, z);
+                StartCoroutine(FetchLocation(player));
             }
             else
             {
@@ -58,12 +61,34 @@ public class TestingInt : MonoBehaviour
                 {
                     // Player has been in the same grid cell for more than 5 seconds
                     Debug.Log("Player has been in the same grid cell for more than 5 seconds");
-                    grid.SetValue(x, z, 10);
-                    logStack.Push(new GridCell(x,z));
+                    UpdateGrid(playerWorldPosition, x, z);
+                    StartCoroutine(FetchLocation(player));
                     timer = 0f;
                 }
             }
         }
+    }
+
+    private void UpdateGrid(Vector3 playerWorldPosition, int x, int z)
+    {
+        logStack.Push(new GridCell(x, z));
+        distanceStack.Push((int)Vector3.Distance(target.transform.position, playerWorldPosition));
+        var currentValue = grid.GetValue(playerWorldPosition);
+        grid.SetValue(x, z, currentValue += 5);
+        PrintStack();
+    }
+
+    private IEnumerator FetchLocation(GameObject player)
+    {
+        List<int> distanceList = distanceStack.ToList();
+        int newDistance = distanceList[0];
+        int currentDistance = distanceList.Count >= 2 ? distanceList[1] : distanceList[0];
+        Debug.Log($"current distance = {currentDistance} new distance = {newDistance}");
+        string url = $"http://api.hyperionar.stroetenga.nl/Calculations/DoseRateAtNewDistance?DoseRate=12&CurrentDistance={currentDistance}&NewDistance={newDistance}";
+        UnityWebRequest webRequest = UnityWebRequest.Get(url);
+        yield return webRequest.SendWebRequest();
+        Debug.Log(webRequest.downloadHandler.text);
+
     }
 
     private void PrintStack()
@@ -81,11 +106,13 @@ public class TestingInt : MonoBehaviour
     }
 }
 
-public class GridCell{
+public class GridCell
+{
     public int x;
     public int z;
 
-    public GridCell(int x, int z){
+    public GridCell(int x, int z)
+    {
         this.x = x;
         this.z = z;
     }
